@@ -5,11 +5,11 @@ abstract class Contract {
     protected int mmsCounter = 0;
     protected int totalCallsTime = 0;
 
-    abstract void sendSms();
+    abstract boolean sendSms();
 
-    abstract void sendMms();
+    abstract boolean sendMms();
 
-    abstract void call(int seconds);
+    abstract int call(int seconds);
 
     void printAccountState() {
         System.out.println("=== STAN KONTA ===");

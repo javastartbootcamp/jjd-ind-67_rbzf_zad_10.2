@@ -1,33 +1,41 @@
 package pl.javastart.task;
 
-public class Phone {
+class Phone {
     private Contract contract;
 
-    public Phone(Contract contract) {
+    Phone(Contract contract) {
         this.contract = contract;
     }
 
-    public Contract getContract() {
-        return contract;
+    void sendSms() {
+        if (contract.sendSms()) {
+            System.out.println("SMS wyslany");
+        } else {
+            System.out.println("Nie udało się wysłać SMSa");
+        }
     }
 
-    public void setContract(Contract contract) {
-        this.contract = contract;
+    void sendMms() {
+        if (contract.sendMms()) {
+            System.out.println("MMS wyslany");
+        } else {
+            System.out.println("Nie udało się wysłać MMSa");
+        }
     }
 
-    public void sendSms() {
-        contract.sendSms();
+    void call(int seconds) {
+        int callDuration = contract.call(seconds);
+        if (callDuration == 0) {
+            System.out.println("Brak mozliwosci przeprowadzenia rozmowy.");
+        } else if (callDuration == seconds) {
+            System.out.println("Rozmowa trwala " + seconds + " sek.");
+        } else if (callDuration < seconds) {
+            int diff = seconds - callDuration;
+            System.out.println("Rozmowa zostala przerwana po " + callDuration + " sek.");
+        }
     }
 
-    public void sendMms() {
-        contract.sendMms();
-    }
-
-    public void call(int seconds) {
-        contract.call(seconds);
-    }
-
-    public void printAccountState() {
+    void printAccountState() {
         contract.printAccountState();
     }
 }

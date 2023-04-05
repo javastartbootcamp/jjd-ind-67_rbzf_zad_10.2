@@ -1,10 +1,10 @@
 package pl.javastart.task;
 
 class CardContract extends Contract {
-    private double accountBalance;
+    protected double accountBalance;
     private double smsCost;
     private double mmsCost;
-    private double oneMinuteCallCost;
+    protected double oneMinuteCallCost;
 
     CardContract(double accountBalance, double smsCost, double mmsCost, double oneMinuteCallCost) {
         this.accountBalance = accountBalance;
@@ -14,47 +14,47 @@ class CardContract extends Contract {
     }
 
     @Override
-    void sendSms() {
+    boolean sendSms() {
         if (smsCost <= accountBalance) {
-            System.out.println("SMS wyslany");
             smsCounter++;
             accountBalance -= smsCost;
+            return true;
         } else {
-            System.out.println("Nie udało się wysłać SMSa");
+            return false;
         }
     }
 
     @Override
-    void sendMms() {
+    boolean sendMms() {
         if (mmsCost <= accountBalance) {
-            System.out.println("MMS wyslany");
             mmsCounter++;
             accountBalance -= mmsCost;
+            return true;
         } else {
-            System.out.println("Nie udało się wysłać MMSa");
+            return false;
         }
     }
 
     @Override
-    void call(int seconds) {
+    int call(int seconds) {
         if (accountBalance <= 0) {
-            System.out.println("Brak srodkow na koncie.");
+            return 0;
         } else if ((seconds / 60.) <= (accountBalance / oneMinuteCallCost)) {
-            System.out.println("Rozmowa trwala " + seconds + " sekund.");
             accountBalance -= (seconds / 60.) * oneMinuteCallCost;
             totalCallsTime += seconds;
+            return seconds;
         } else {
-            System.out.println("Rozmowa trwala " + (accountBalance / oneMinuteCallCost) * 60  + " sek. " +
-                    "i zostala przerwana z powodu braku srodkow na koncie");
-            totalCallsTime += (accountBalance / oneMinuteCallCost) * 60;
+            int callTime = (int) (accountBalance / oneMinuteCallCost) * 60;
+            totalCallsTime += callTime;
             accountBalance = 0;
+            return callTime;
         }
     }
 
     @Override
     void printAccountState() {
         super.printAccountState();
-        System.out.printf("Na koncie zostało %.2f zł\n", accountBalance);
+        System.out.printf("Na koncie jest aktualnie %.2f zł\n", accountBalance);
         System.out.println("==================");
     }
 }

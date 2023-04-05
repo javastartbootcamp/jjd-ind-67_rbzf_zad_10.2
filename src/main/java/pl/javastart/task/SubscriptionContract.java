@@ -8,20 +8,21 @@ class SubscriptionContract extends Contract {
     }
 
     @Override
-    void sendSms() {
-        System.out.println("SMS wyslany");
+    boolean sendSms() {
         smsCounter++;
+        return true;
     }
 
     @Override
-    void sendMms() {
+    boolean sendMms() {
         mmsCounter++;
+        return true;
     }
 
     @Override
-    void call(int seconds) {
-        System.out.println("Rozmowa trwala " + seconds + " sekund.");
+    int call(int seconds) {
         totalCallsTime += seconds;
+        return seconds;
     }
 
     @Override
